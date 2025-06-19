@@ -448,7 +448,7 @@ if st.session_state.wine_page:
             body_default = st.session_state['body_input']
         else:
             body_default = "Medium-bodied"
-        body_options = ["Very light-bodied", "Light-bodied", "Medium-bodied", "Full-bodied", "Very full-bodied"] + [None]
+        body_options = ["Very light-bodied", "Light-bodied", "Medium-bodied", "Full-bodied", "Very full-bodied"]
         # Find index if default exists, else None (which will default to first)
         if body_default in body_options:
             body_index = body_options.index(body_default)

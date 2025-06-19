@@ -254,7 +254,7 @@ if st.session_state.food_page:
                                 elif row['Type'] == "White":
                                     image_path = "images/white_wine.png"
                                 elif row['Type'] == "Rosé":
-                                    image_path = "images/rose_wine.png"
+                                    image_path = "images/rose_bottle.png"
                                 elif row['Type'] == "Sparkling":
                                     image_path = "images/sparkling_wine.png"
                                 elif row['Type'] == "Dessert":

@@ -3,6 +3,8 @@ import pandas as pd
 import os
 import ast
 import requests
+import ipdb
+import tempfile
 
 
 
@@ -336,7 +338,11 @@ if st.session_state.wine_page:
             img_bytes = uploaded_image.getvalue()
             files = {'img': img_bytes}
             #response = requests.post("https://cvino-api-224355531443.europe-west1.run.app/read_image", files=files)
+
             response = requests.post("https://fast-cvino-399730216663.europe-west1.run.app/read_image", files=files) # backend
+
+
+
             if response.status_code == 200:
                 # st.success("Image successfully uploaded and processed!")
                 wine_info = response.json()
@@ -508,7 +514,10 @@ if st.session_state.wine_page:
 
             try:
                 response = requests.post(
+
                     "https://fast-cvino-399730216663.europe-west1.run.app/recommend-wines",
+
+
                     json=payload
                 )
 

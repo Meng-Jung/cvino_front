@@ -120,14 +120,14 @@ if "Harmonize" in df.columns:
 col1, col2 = st.columns([1, 1])
 
 with col1:
-    if st.button("🍽️ Get Wine Recommendation by Food"):
-        st.session_state.food_page = True
-        st.session_state.wine_page = False
-
-with col2:
     if st.button("🍷 Get Wine Recommendation by Characteristics"):
         st.session_state.wine_page = True
         st.session_state.food_page = False
+
+with col2:
+    if st.button("🍽️ Get Wine Recommendation by Food"):
+        st.session_state.food_page = True
+        st.session_state.wine_page = False
 
 # === Food-Based Wine Recommendation Page ===
 if st.session_state.food_page:
@@ -220,6 +220,11 @@ if st.session_state.food_page:
     food_input = ", ".join(food_inputs)
 
     if st.button("🔎 Recommend Wines"):
+        st.components.v1.html("""
+            <audio autoplay id="food-audio">
+                <source src="https://raw.githubusercontent.com/gaziza-jnb/cvino_front/master/interface/cork_wine_merge.mp3" type="audio/mp3">
+            </audio>
+            """, height=0)
         if selected_foods:
             selected_food_names = [food.split(' ', 1)[1] if ' ' in food else food for food in selected_foods]
 

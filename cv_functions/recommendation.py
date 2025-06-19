@@ -5,10 +5,11 @@ from cv_functions.geocode_regions import retrieve_coordinate
 import numpy as np
 import os
 import ast
+from fastapi import HTTPException
 
-# Load model path
-LOCAL_MODEL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "models", "trained_model.pkl"))
-model = load_model(LOCAL_MODEL_PATH)
+# # Load model path
+# LOCAL_MODEL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "models", "trained_model.pkl"))
+# model = load_model(LOCAL_MODEL_PATH)
 
 def get_wine_recommendations_by_characteristics(
     wine_type='Red',
@@ -19,7 +20,8 @@ def get_wine_recommendations_by_characteristics(
     country=None,
     region_name=None,
     n_recommendations=5,
-    metadata_df: pd.DataFrame = None
+    metadata_df: pd.DataFrame = None,
+    model=None
 ):
     latitude, longitude = 0, 0
     if region_name:

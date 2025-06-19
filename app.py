@@ -3,6 +3,8 @@ import pandas as pd
 import os
 import ast
 import requests
+import ipdb
+import tempfile
 
 
 
@@ -61,7 +63,7 @@ def load_data():
 
 
 df = load_data()
-print(df)
+
 
 # create a Country vs Region lookup dictionary
 
@@ -70,7 +72,7 @@ country_to_regions = (
     .apply(lambda x: list(dict.fromkeys(x)))  # removes duplicates, keeps order
     .to_dict()
 )
-print(country_to_regions)
+
 
 region_to_country = {
     region: country
@@ -120,14 +122,14 @@ if "Harmonize" in df.columns:
 col1, col2 = st.columns([1, 1])
 
 with col1:
-    if st.button("🍽️ Get Wine Recommendation by Food"):
-        st.session_state.food_page = True
-        st.session_state.wine_page = False
-
-with col2:
     if st.button("🍷 Get Wine Recommendation by Characteristics"):
         st.session_state.wine_page = True
         st.session_state.food_page = False
+
+with col2:
+    if st.button("🍽️ Get Wine Recommendation by Food"):
+        st.session_state.food_page = True
+        st.session_state.wine_page = False
 
 # === Food-Based Wine Recommendation Page ===
 if st.session_state.food_page:
@@ -220,6 +222,11 @@ if st.session_state.food_page:
     food_input = ", ".join(food_inputs)
 
     if st.button("🔎 Recommend Wines"):
+        st.components.v1.html("""
+            <audio autoplay id="food-audio">
+                <source src="https://raw.githubusercontent.com/gaziza-jnb/cvino_front/master/interface/cork_wine_merge.mp3" type="audio/mp3">
+            </audio>
+            """, height=0)
         if selected_foods:
             selected_food_names = [food.split(' ', 1)[1] if ' ' in food else food for food in selected_foods]
 
@@ -331,7 +338,11 @@ if st.session_state.wine_page:
             img_bytes = uploaded_image.getvalue()
             files = {'img': img_bytes}
             #response = requests.post("https://cvino-api-224355531443.europe-west1.run.app/read_image", files=files)
+
             response = requests.post("https://fast-cvino-399730216663.europe-west1.run.app/read_image", files=files) # backend
+
+
+
             if response.status_code == 200:
                 # st.success("Image successfully uploaded and processed!")
                 wine_info = response.json()
@@ -503,7 +514,10 @@ if st.session_state.wine_page:
 
             try:
                 response = requests.post(
+
                     "https://fast-cvino-399730216663.europe-west1.run.app/recommend-wines",
+
+
                     json=payload
                 )
 

@@ -536,7 +536,7 @@ if st.session_state.wine_page:
                                 elif wine['Type'] == "White":
                                     image_path = "images/white_wine.png"
                                 elif wine['Type'] == "Rosé":
-                                    image_path = "images/rose_wine.png"
+                                    image_path = "images/rose_bottle.png"
                                 elif wine['Type'] == "Sparkling":
                                     image_path = "images/sparkling_wine.png"
                                 elif wine['Type'] == "Dessert":

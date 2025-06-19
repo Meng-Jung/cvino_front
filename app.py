@@ -56,12 +56,12 @@ st.markdown("""
 # === Load dropdown source data ===
 @st.cache_data
 def load_data():
-    try:
-        return pd.read_csv("raw_data/wine_metadata.csv")
-    except FileNotFoundError:
-        return pd.DataFrame()
+    return pd.read_csv("wine_metadata.csv")
+
+
 
 df = load_data()
+print(df)
 
 # create a Country vs Region lookup dictionary
 
@@ -70,6 +70,7 @@ country_to_regions = (
     .apply(lambda x: list(dict.fromkeys(x)))  # removes duplicates, keeps order
     .to_dict()
 )
+print(country_to_regions)
 
 region_to_country = {
     region: country
@@ -484,7 +485,7 @@ if st.session_state.wine_page:
     if st.button("🔎 Get Recommendations"):
         st.components.v1.html("""
         <audio autoplay id="temp-audio">
-            <source src="https://raw.githubusercontent.com/Obispodino/cvino/master/interface/wine-music.mp3" type="audio/mp3">
+            <source src="https://raw.githubusercontent.com/gaziza-jnb/cvino_front/master/interface/cork_wine_merge.mp3" type="audio/mp3">
         </audio>
         """, height=0)
 

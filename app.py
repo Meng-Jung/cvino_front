@@ -63,7 +63,7 @@ def load_data():
 
 
 df = load_data()
-print(df)
+
 
 # create a Country vs Region lookup dictionary
 
@@ -72,7 +72,7 @@ country_to_regions = (
     .apply(lambda x: list(dict.fromkeys(x)))  # removes duplicates, keeps order
     .to_dict()
 )
-print(country_to_regions)
+
 
 region_to_country = {
     region: country

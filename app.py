@@ -318,7 +318,7 @@ if st.session_state.wine_page:
 
     # === Image Upload Box with Side-by-Side Layout ===
     st.markdown(
-        "<h3 style='font-size:1.3rem;'>📸 Upload a Wine Picture</h3>",
+        "<h3 style='font-size:1.3rem;'>📸 Upload a clear photo of a wine label</h3>",
         unsafe_allow_html=True
     )
     # Three columns: left (upload + button), middle (image), right (wine info)
@@ -331,6 +331,8 @@ if st.session_state.wine_page:
     with img_col:
         if uploaded_image is not None:
             st.image(uploaded_image, caption="Your uploaded image", width=150)
+        else:
+            st.image('images/example_wine_img.jpeg', caption="Example wine image", width=150)
 
     with info_col:
         if send_to_api_clicked and uploaded_image is not None:

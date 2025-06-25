@@ -356,7 +356,7 @@ if st.session_state.wine_page:
             files = {'img': img_bytes}
             #response = requests.post("https://cvino-api-224355531443.europe-west1.run.app/read_image", files=files)
 
-            response = requests.post("https://fast-cvino-399730216663.europe-west1.run.app/read_image", files=files) # backend
+            response = requests.post("https://fast-cvino-119857604399.europe-west1.run.app/read_image", files=files) # backend
 
 
 
@@ -532,7 +532,7 @@ if st.session_state.wine_page:
             try:
                 response = requests.post(
 
-                    "https://fast-cvino-399730216663.europe-west1.run.app/recommend-wines",
+                    "https://fast-cvino-119857604399.europe-west1.run.app/recommend-wines",
 
 
                     json=payload

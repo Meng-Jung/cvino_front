@@ -67,7 +67,7 @@ df = load_data()
 API_KEY = st.secrets["API_KEY"]
 
 # Your deployed backend endpoint (Cloud Run URL)
-API_URL = "https://fast-cvino-119857604399.europe-west1.run.app"
+API_URL = st.secrets["cloud_api_uri"]
 
 
 # create a Country vs Region lookup dictionary
@@ -360,10 +360,6 @@ if st.session_state.wine_page:
         if send_to_api_clicked and uploaded_image is not None:
             img_bytes = uploaded_image.getvalue()
             files = {'img': img_bytes}
-            #response = requests.post("https://cvino-api-224355531443.europe-west1.run.app/read_image", files=files)
-
-            #response = requests.post("https://fast-cvino-119857604399.europe-west1.run.app/read_image", files=files) # backend
-
             headers = {
             "Authorization": f"Bearer {API_KEY}"
             }
@@ -541,15 +537,12 @@ if st.session_state.wine_page:
             }
 
             try:
-                # response = requests.post(
-                #     "https://fast-cvino-119857604399.europe-west1.run.app/recommend-wines",
-                #     json=payload
-                # )
+
                 headers = {
                 "Authorization": f"Bearer {API_KEY}"
                 }
                 API_URL_image = f"{API_URL}/recommend-wines"
-                response = requests.post(API_URL_image, files=files, headers=headers)
+                response = requests.post(API_URL_image, json=payload, headers=headers)
 
                 if response.status_code == 200:
                     wines = response.json().get("wines", [])

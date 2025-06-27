@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import ast
 import requests
-
+import urllib.parse
 
 
 
@@ -564,7 +564,7 @@ if st.session_state.wine_page:
 
                     for wine in wines:
                         with st.container():
-                            cols = st.columns([1, 4])
+                            cols = st.columns([2, 4])
                             with cols[0]:
                                 # Add vertical space above the image to lower its position
                                 st.markdown("<div style='height:40px;'></div>", unsafe_allow_html=True)
@@ -580,7 +580,35 @@ if st.session_state.wine_page:
                                     image_path = "images/dessert.png"
                                 elif wine['Type'] == "Dessert/Port":
                                     image_path = "images/port.png"
-                                st.image(image_path, width=250)
+                                st.image(image_path, width=200)
+
+                                # Compose Vivino search URL
+                                grapes = ", ".join(ast.literal_eval(wine['Grapes_list'])) if isinstance(wine['Grapes_list'], str) else wine['Grapes_list']
+                                wine_type_w = f"{wine['Type']} wine"
+                                wine_info = f"{wine['WineName']}, {wine['Country']}, {wine['RegionName'], grapes}"
+                                encoded_name = urllib.parse.quote(wine_info)
+                                #purchase_url = f"https://www.vivino.com/explore?country_code=DE&buyable=true"
+                                purchase_url = f"https://www.vivino.com/search/wines?q={encoded_name}"
+                            #     purchase_url = (
+                            #     "https://www.vivino.com/explore?"
+                            #     "buyable=true"
+                            #     "&country_code=DE"
+                            #     #"&grape_filter_ids[]=13"
+                            #     "&food_ids[]=1"
+                            #     "wine_type_ids%5B%5D="
+                            #     #"&min_rating=4.0"
+                            #     #"&price_range_min=20"
+                            #     #"&price_range_max=50"
+                            #     "&order_by=rating"
+                            #     "&order=desc"
+                            # )
+                                st.markdown(f"""
+                                <a href="{purchase_url}" target="_blank">
+                                    <button style="padding:10px 20px;font-size:16px;background-color:#800000;color:white;border:none;border-radius:5px;">
+                                        Find wine on Vivino
+                                    </button>
+                                </a>
+                                """, unsafe_allow_html=True)
 
                             with cols[1]:
                                 st.markdown(f"""
@@ -594,6 +622,19 @@ if st.session_state.wine_page:
                                     - **Similarity**: {wine['Similarity']:.2f}
                                 """)
                                 st.markdown("---")
+
+                            # with cols[2]:
+                            #     # Compose Vivino search URL
+                            #     wine_info = f"{wine['WineName']}, {wine['Country']}, {wine['RegionName'], wine['Type']}"
+                            #     encoded_name = urllib.parse.quote(wine_info)
+                            #     purchase_url = f"https://www.vivino.com/search/wines?q={encoded_name}"
+                            #     st.markdown(f"""
+                            #     <a href="{purchase_url}" target="_blank">
+                            #         <button style="padding:10px 20px;font-size:16px;background-color:#800000;color:white;border:none;border-radius:5px;">
+                            #             Purchase at Vivino
+                            #         </button>
+                            #     </a>
+                            #     """, unsafe_allow_html=True)
 
                 else:
                     st.error(f"API error: {response.status_code} – {response.text}")

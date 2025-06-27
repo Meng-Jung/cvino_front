@@ -59,9 +59,15 @@ st.markdown("""
 def load_data():
     return pd.read_csv("wine_metadata.csv")
 
-
-
 df = load_data()
+
+
+# === load API_key
+# Get the API key from Streamlit secrets
+API_KEY = st.secrets["API_KEY"]
+
+# Your deployed backend endpoint (Cloud Run URL)
+API_URL = "https://fast-cvino-119857604399.europe-west1.run.app"
 
 
 # create a Country vs Region lookup dictionary
@@ -356,8 +362,13 @@ if st.session_state.wine_page:
             files = {'img': img_bytes}
             #response = requests.post("https://cvino-api-224355531443.europe-west1.run.app/read_image", files=files)
 
-            response = requests.post("https://fast-cvino-119857604399.europe-west1.run.app/read_image", files=files) # backend
+            #response = requests.post("https://fast-cvino-119857604399.europe-west1.run.app/read_image", files=files) # backend
 
+            headers = {
+            "Authorization": f"Bearer {API_KEY}"
+            }
+            API_URL_image = f"{API_URL}/read_image"
+            response = requests.post(API_URL_image, files=files, headers=headers)
 
 
             if response.status_code == 200:
@@ -530,13 +541,15 @@ if st.session_state.wine_page:
             }
 
             try:
-                response = requests.post(
-
-                    "https://fast-cvino-119857604399.europe-west1.run.app/recommend-wines",
-
-
-                    json=payload
-                )
+                # response = requests.post(
+                #     "https://fast-cvino-119857604399.europe-west1.run.app/recommend-wines",
+                #     json=payload
+                # )
+                headers = {
+                "Authorization": f"Bearer {API_KEY}"
+                }
+                API_URL_image = f"{API_URL}/recommend-wines"
+                response = requests.post(API_URL_image, files=files, headers=headers)
 
                 if response.status_code == 200:
                     wines = response.json().get("wines", [])
@@ -593,3 +606,24 @@ if st.session_state.wine_page:
                     st.error(f"API error: {response.status_code} – {response.text}")
             except Exception as e:
                 st.error(f"Failed to connect to API: {e}")
+
+# ==== Helper function to get user IP address and find the price of wine===
+def get_user_ip():
+    try:
+        response = requests.get("https://api64.ipify.org?format=json")
+        ip = response.json().get("ip")
+        return ip
+    except:
+        return None
+
+def get_location_from_ip(ip):
+    try:
+        response = requests.get(f"https://ipapi.co/{ip}/json/")
+        data = response.json()
+        return {
+            "country": data.get("country_name"),
+            "region": data.get("region"),
+            "city": data.get("city"),
+        }
+    except:
+        return {}
